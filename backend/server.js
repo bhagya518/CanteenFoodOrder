@@ -18,13 +18,18 @@ const orderRoutes = require("./routes/orderRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 // ✅ MongoDB Connection (use .env for flexibility)
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/canteenDB", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/canteenDB");
+    console.log("✅ MongoDB connected successfully");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1);
+  }
+};
+
+// Connect to MongoDB
+connectDB();
 
 // ✅ Mount Routes
 app.use("/api/menu", menuRoutes);
