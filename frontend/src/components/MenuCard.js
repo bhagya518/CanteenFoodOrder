@@ -7,27 +7,38 @@ import {
   CardActions,
   Button,
   Box,
-  IconButton, 
+  IconButton,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import AddIcon from "@mui/icons-material/Add"; 
-import RemoveIcon from "@mui/icons-material/Remove"; 
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import itemsData from "./items.json";
+
+const placeholderImage = "https://via.placeholder.com/300x200?text=No+Image";
+
+const nameToJsonImage = itemsData.reduce((acc, entry) => {
+  if (entry?.name && entry?.image) {
+    acc[entry.name.toLowerCase().trim()] = entry.image;
+  }
+  return acc;
+}, {});
 
 const MenuCard = ({ item, addToCart }) => {
   const [quantity, setQuantity] = useState(1);
 
   const resolveImageSrc = () => {
-    const raw = item?.image || item?.img || '';
-    if (!raw) {
-      return 'https://via.placeholder.com/300x200?text=No+Image';
+    const rawImage = item?.image || item?.img || nameToJsonImage[item?.name?.toLowerCase().trim() || ""];
+
+    if (!rawImage) {
+      return placeholderImage;
     }
 
-    if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:')) {
-      return raw;
+    if (/^(https?:)?\/\//i.test(rawImage) || rawImage.startsWith("data:")) {
+      return rawImage;
     }
 
-    const baseURL = (process.env.REACT_APP_API_URL || 'https://canteenfoodorder.onrender.com').replace(/\/$/, '');
-    const normalizedPath = raw.startsWith('/') ? raw : `/uploads/${raw}`;
+    const baseURL = (process.env.REACT_APP_API_URL || "https://canteenfoodorder.onrender.com").replace(/\/$/, "");
+    const normalizedPath = rawImage.startsWith("/") ? rawImage : `/uploads/${rawImage}`;
     return `${baseURL}${normalizedPath}`;
   };
 
