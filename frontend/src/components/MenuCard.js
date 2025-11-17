@@ -26,7 +26,7 @@ const MenuCard = ({ item, addToCart }) => {
       return raw;
     }
 
-    const baseURL = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+    const baseURL = (process.env.REACT_APP_API_URL || 'https://canteenfoodorder.onrender.com').replace(/\/$/, '');
     const normalizedPath = raw.startsWith('/') ? raw : `/uploads/${raw}`;
     return `${baseURL}${normalizedPath}`;
   };
